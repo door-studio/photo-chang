@@ -1,0 +1,329 @@
+/* PhotoChang 修图工具 —— 界面样式（Scratch 风格） */
+
+:root {
+  --bg: #e9ecf1;
+  --panel: #f7f8fa;
+  --panel-2: #ffffff;
+  --line: #d6dae2;
+  --text: #4a5064;
+  --text-strong: #2f3547;
+  --accent: #4c97ff;
+  --accent-dark: #3373cc;
+  --danger: #e8574a;
+  --shadow: 0 1px 3px rgba(20, 30, 60, .12);
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button, input, select, textarea { font-family: inherit; font-size: 13px; color: var(--text); }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ---------- 菜单栏 ---------- */
+
+#menubar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 46px;
+  padding: 0 14px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  z-index: 20;
+}
+
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand-mark {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: conic-gradient(from 210deg, #ff7a45, #ffd166, #4cd97b, #4c97ff, #b06bff, #ff7a45);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .75);
+}
+.brand-name { font-weight: 700; color: var(--text-strong); letter-spacing: .3px; }
+
+.menus { display: flex; gap: 2px; }
+.menu-title {
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text);
+}
+.menu-title:hover, .menu-title.open { background: #eef1f6; color: var(--text-strong); }
+
+.menubar-actions { margin-left: auto; display: flex; gap: 8px; }
+
+.ghost-btn, .primary-btn, .icon-btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.ghost-btn:hover, .icon-btn:hover { background: #eef1f6; border-color: #c2c9d6; }
+.ghost-btn.small { padding: 3px 8px; }
+.primary-btn { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.primary-btn:hover { background: var(--accent-dark); }
+.icon-btn { padding: 2px 7px; line-height: 1.2; }
+.ghost-btn:disabled, .primary-btn:disabled, .icon-btn:disabled { opacity: .45; cursor: default; }
+
+/* ---------- 主体 ---------- */
+
+#body { flex: 1; display: flex; min-height: 0; }
+
+/* ---------- 左侧工具栏 ---------- */
+
+#toolbar {
+  width: 214px;
+  flex: 0 0 214px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+
+.tool-btn {
+  position: relative;
+  height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .12s, border-color .12s, transform .06s;
+}
+.tool-btn svg { width: 22px; height: 22px; fill: #5a6178; }
+.tool-btn:hover { background: #eef3fb; border-color: #b9c9e4; }
+.tool-btn.active { background: var(--accent); border-color: var(--accent); }
+.tool-btn.active svg { fill: #fff; }
+.tool-btn:active { transform: translateY(1px); }
+.tool-btn::after {
+  content: attr(data-shortcut);
+  position: absolute; right: 4px; bottom: 2px;
+  font-size: 9px; color: #a3aab9;
+}
+.tool-btn.active::after { color: rgba(255, 255, 255, .75); }
+
+.tool-options { display: flex; flex-direction: column; gap: 10px; }
+.option-row { display: flex; flex-direction: column; gap: 4px; }
+.option-row.hidden { display: none; }
+.option-row label { font-size: 12px; color: var(--text); }
+.option-row .value { color: var(--accent); font-weight: 600; }
+
+.segmented { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.segmented button {
+  flex: 1; border: 0; background: #fff; padding: 4px 0; cursor: pointer; color: var(--text);
+  border-right: 1px solid var(--line);
+}
+.segmented button:last-child { border-right: 0; }
+.segmented button.active { background: var(--accent); color: #fff; }
+
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px; border-radius: 3px; background: #cdd3de; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent); border: 2px solid #fff; cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
+
+select {
+  width: 100%; padding: 5px 6px; border: 1px solid var(--line);
+  border-radius: 6px; background: #fff; cursor: pointer;
+}
+
+/* ---------- 调色板 ---------- */
+
+.palette {
+  margin-top: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.palette-head { display: flex; align-items: center; gap: 8px; }
+.palette-current {
+  width: 34px; height: 34px; border-radius: 7px;
+  border: 1px solid var(--line); background: #000;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+.palette-hex {
+  flex: 1; width: 100%; padding: 6px 8px; border: 1px solid var(--line);
+  border-radius: 6px; text-transform: uppercase; text-align: center;
+  letter-spacing: .5px;
+}
+.palette-sv, .palette-hue { width: 100%; display: block; border-radius: 6px; cursor: crosshair; border: 1px solid var(--line); }
+.palette-label { font-size: 11px; color: #8b93a6; }
+.palette-swatches { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+.palette-swatches button {
+  aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(0, 0, 0, .12);
+  cursor: pointer; padding: 0;
+}
+.palette-swatches button:hover { transform: scale(1.12); }
+.palette-swatches.recent { grid-template-columns: repeat(10, 1fr); }
+
+/* ---------- 画布区 ---------- */
+
+#viewport {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, #f2f4f8 0%, #e4e8ef 70%, #dde1e9 100%);
+}
+
+#stage {
+  position: absolute;
+  left: 0; top: 0;
+  transform-origin: 0 0;
+  box-shadow: 0 6px 24px rgba(25, 35, 60, .18);
+}
+
+#art, #overlay {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+#art {
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #d7dbe3 25%, transparent 25%),
+    linear-gradient(-45deg, #d7dbe3 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d7dbe3 75%),
+    linear-gradient(-45deg, transparent 75%, #d7dbe3 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+#overlay { position: absolute; left: 0; top: 0; pointer-events: none; }
+
+.viewport-empty {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  color: #9aa2b4; pointer-events: none; display: none;
+}
+
+/* ---------- 调整面板 ---------- */
+
+#adjust-panel {
+  width: 236px; flex: 0 0 236px;
+  background: var(--panel-2);
+  border-left: 1px solid var(--line);
+  padding: 12px;
+  display: flex; flex-direction: column; gap: 12px;
+  overflow-y: auto;
+}
+#adjust-panel.closed { display: none; }
+.panel-title { display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: var(--text-strong); }
+.adjust-row { display: flex; flex-direction: column; gap: 5px; }
+.adjust-row .value { color: var(--accent); font-weight: 600; }
+.adjust-buttons { display: flex; gap: 6px; }
+.adjust-buttons button {
+  flex: 1; padding: 6px 0; border: 1px solid var(--line); background: #fff;
+  border-radius: 6px; cursor: pointer;
+}
+.adjust-buttons button:hover { background: #eef3fb; }
+.panel-note { color: #98a0b3; font-size: 11px; line-height: 1.6; margin: 0; }
+
+/* ---------- 状态栏 ---------- */
+
+#statusbar {
+  height: 30px; flex: 0 0 30px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 12px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--line);
+  font-size: 12px; color: #7c8397;
+}
+.status-item { white-space: nowrap; }
+.zoom-controls { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.zoom-controls input[type=range] { width: 130px; }
+.zoom-label { min-width: 46px; text-align: right; color: var(--text); }
+
+/* ---------- 下拉菜单 ---------- */
+
+#menu-layer {
+  position: fixed; inset: 0; z-index: 100; display: none;
+}
+#menu-layer.open { display: block; }
+.menu-popup {
+  position: absolute;
+  min-width: 190px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(20, 30, 60, .18);
+  padding: 5px;
+}
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 7px 10px; border-radius: 5px; cursor: pointer; color: var(--text);
+}
+.menu-item:hover { background: var(--accent); color: #fff; }
+.menu-item:hover .menu-shortcut { color: rgba(255, 255, 255, .85); }
+.menu-item.disabled { opacity: .4; pointer-events: none; }
+.menu-sep { height: 1px; background: var(--line); margin: 4px 6px; }
+.menu-shortcut { color: #a3aab9; font-size: 12px; }
+
+/* ---------- 文本输入捕获 ---------- */
+
+.text-capture {
+  position: fixed; left: -4000px; top: -4000px;
+  width: 10px; height: 10px; opacity: 0;
+}
+
+/* ---------- 对话框 ---------- */
+
+.dialog-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(30, 38, 60, .35);
+  display: flex; align-items: center; justify-content: center;
+}
+.dialog {
+  width: 360px; max-width: 92vw;
+  background: #fff; border-radius: 12px; padding: 18px;
+  box-shadow: 0 18px 48px rgba(15, 25, 50, .3);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.dialog-title { font-size: 15px; font-weight: 700; color: var(--text-strong); }
+.dialog-body { color: var(--text); line-height: 1.8; }
+.dialog-body p { margin: 0 0 6px; }
+.dialog-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.dialog-presets button {
+  padding: 7px 0; border: 1px solid var(--line); background: #fff;
+  border-radius: 6px; cursor: pointer;
+}
+.dialog-presets button:hover { background: #eef3fb; border-color: var(--accent); }
+.dialog-row { display: flex; align-items: center; gap: 8px; }
+.dialog-row input {
+  width: 84px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+}
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.dialog-actions button {
+  padding: 6px 16px; border: 1px solid var(--line); background: #fff;
+  border-radius: 6px; cursor: pointer;
+}
+.shortcut-table { width: 100%; border-collapse: collapse; }
+.shortcut-table td { padding: 5px 4px; border-bottom: 1px solid #eef0f4; }
+.shortcut-table td.sk { width: 150px; color: var(--accent); font-weight: 600; }

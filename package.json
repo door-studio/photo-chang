@@ -1,0 +1,51 @@
+{
+  "name": "photo-chang",
+  "productName": "PhotoChang",
+  "version": "1.0.0",
+  "description": "PhotoChang 修图工具 —— 一个 Scratch 风格的位图修图编辑器",
+  "main": "electron/main.js",
+  "author": "door-studio",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "web": "node scripts/serve-web.js",
+    "dist": "electron-builder --win portable --x64",
+    "dist:all": "electron-builder --win portable --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "resedit": "^3.1.0"
+  },
+  "build": {
+    "appId": "studio.door.photochang",
+    "productName": "PhotoChang",
+    "copyright": "Copyright © 2026 door-studio",
+    "asar": true,
+    "afterPack": "scripts/after-pack.js",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "PhotoChang-${version}-portable.exe"
+    }
+  }
+}
